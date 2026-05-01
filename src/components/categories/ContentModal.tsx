@@ -91,12 +91,12 @@ export default function ContentModal({
 
     try {
       // Create all content items in parallel
-      const results = await Promise.all(
-        finalTags.map(name =>
-          createContent({ name, subcategoryId: selectedSubId, status: 'Active' })
-            .then(r => ({ id: r.data._id, name: r.data.name }))
-        )
-      );
+      // const results = await Promise.all(
+      //   finalTags.map(name =>
+      //     createContent({ name, subcategoryId: selectedSubId, status: 'Active' })
+      //       .then(r => ({ id: r.data._id, name: r.data.name }))
+      //   )
+      // );
       onSubmit(selectedCatId);
       onClose();
     } catch (err: any) {

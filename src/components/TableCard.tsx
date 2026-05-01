@@ -16,7 +16,7 @@ interface TableCardProps {
   categories: Category[];
 }
 
-export const TableCard: React.FC<TableCardProps> = ({ title, subtitle, categories }) => {
+export const TableCard: React.FC<TableCardProps> = ({ categories }) => {
   const [activeTab, setActiveTab] = useState('all');
 
   return (
