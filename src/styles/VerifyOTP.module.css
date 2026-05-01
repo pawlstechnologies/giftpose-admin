@@ -1,0 +1,144 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #fff;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #111;
+  text-align: center;
+}
+
+.card {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 16px;
+  padding: 36px 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.65;
+  max-width: 300px;
+  margin: 0 auto 32px;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.otp-digit {
+  width: 52px;
+  height: 56px;
+  border-radius: 10px;
+  background: #e8ede8;
+  border: 2px solid transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.otp-digit:focus {
+  background: #fff;
+  border-color: #27ae60;
+}
+
+.btn-verify {
+  width: 100%;
+  padding: 14px;
+  background: #3ecf5c;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-verify:hover {
+  background: #27ae60;
+}
+
+.btn-verify:active {
+  transform: scale(0.98);
+}
+
+.resend {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.resend:hover {
+  color: #27ae60;
+}
+
+@media(max-width:480px) {
+  .card {
+    padding: 28px 18px;
+  }
+  .otp-digit {
+    width: 42px;
+    height: 48px;
+    font-size: 16px;
+  }
+  .otp-inputs {
+    gap: 7px;
+  }
+}

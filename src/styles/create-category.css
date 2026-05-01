@@ -1,0 +1,461 @@
+/* ═══════════════════════════════════════════════════════════
+   create-category.css
+   Scoped styles for the Create Category page.
+   All classes are prefixed with "cc-" to avoid collisions.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Page header row ─────────────────────────────────────── */
+.cc-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cc-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.cc-page-meta {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.cc-meta-dot {
+  margin: 0 6px;
+  color: #d1d5db;
+}
+
+/* Status badge */
+.cc-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 9px;
+  padding: 9px 18px;
+  background: #fff;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cc-status-label-text {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #555;
+}
+
+.cc-status-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #111;
+  min-width: 46px;
+}
+
+/* ── Section ─────────────────────────────────────────────── */
+.cc-section {
+  margin-bottom: 28px;
+}
+
+.cc-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 18px;
+  letter-spacing: -0.2px;
+}
+
+.cc-divider {
+  border: none;
+  border-top: 1px solid #ececec;
+  margin: 0 0 28px;
+}
+
+/* ── General information card ────────────────────────────── */
+.cc-info-card {
+  background: #f8f9fb;
+  border: 1.5px solid #e8eaed;
+  border-radius: 10px;
+  padding: 24px 26px;
+}
+
+.cc-field-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.cc-field-input {
+  width: 100%;
+  max-width: 520px;
+  padding: 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: #111;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cc-field-input::placeholder { color: #c8cad0; }
+.cc-field-input:focus { border-color: #27ae60; }
+
+/* ── Subcategory management box ──────────────────────────── */
+.cc-sub-mgmt {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Add row */
+.cc-sub-add-wrap {
+  padding: 20px 22px;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.cc-sub-add-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.cc-sub-add-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cc-sub-add-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: 'DM Sans', sans-serif;
+  color: #111;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cc-sub-add-input::placeholder { color: #c8cad0; }
+.cc-sub-add-input:focus { border-color: #27ae60; }
+
+.cc-btn-create-sub {
+  padding: 10px 20px;
+  background: #e8f7ef;
+  color: #27ae60;
+  border: 1.5px solid #b2dfcc;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.18s;
+}
+
+.cc-btn-create-sub:hover {
+  background: #d0f0e0;
+  border-color: #27ae60;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.cc-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 10px;
+  text-align: center;
+}
+
+.cc-empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #f0f0f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.cc-empty-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+.cc-empty-desc {
+  font-size: 13px;
+  color: #9ca3af;
+  max-width: 270px;
+  line-height: 1.55;
+}
+
+/* ── Subcategory list ────────────────────────────────────── */
+.cc-sub-list {
+  /* items separated by dividers */
+}
+
+.cc-sub-item {
+  padding: 18px 22px;
+  border-top: 1.5px solid #f0f0f0;
+}
+
+.cc-sub-item:first-child {
+  border-top: none;
+}
+
+/* Sub item header */
+.cc-sub-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cc-sub-switch {
+  transform: scale(0.88);
+  transform-origin: left center;
+  flex-shrink: 0;
+}
+
+.cc-sub-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+}
+
+.cc-sub-status {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.cc-sub-status.active  { color: #27ae60; }
+.cc-sub-status.inactive { color: #9ca3af; }
+
+.cc-sub-delete {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #eee;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #bbb;
+  transition: all 0.18s;
+  flex-shrink: 0;
+}
+
+.cc-sub-delete:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* ── Type chips ──────────────────────────────────────────── */
+.cc-type-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cc-type-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #444;
+}
+
+.cc-type-tag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.cc-type-tag button:hover { color: #ef4444; }
+
+/* ── Add type inline row ─────────────────────────────────── */
+.cc-add-type-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cc-add-type-input {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-bottom: 1.5px solid #e5e7eb;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: #333;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.cc-add-type-input::placeholder { color: #c8cad0; }
+.cc-add-type-input:focus { border-bottom-color: #27ae60; }
+
+.cc-btn-add-content {
+  font-size: 13px;
+  font-weight: 600;
+  color: #27ae60;
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  padding: 0;
+  transition: opacity 0.18s;
+}
+
+.cc-btn-add-content:hover { opacity: 0.7; }
+
+/* ── Page footer ─────────────────────────────────────────── */
+.cc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.cc-btn-cancel {
+  padding: 11px 28px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.18s;
+}
+
+.cc-btn-cancel:hover { border-color: #bbb; }
+
+.cc-btn-save {
+  padding: 11px 28px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.18s;
+}
+
+.cc-btn-save:hover { background: #229954; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .cc-header-row    { flex-direction: column; align-items: flex-start; }
+  .cc-sub-add-row   { flex-direction: column; align-items: stretch; }
+  .cc-btn-create-sub{ width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .cc-field-input   { max-width: 100%; }
+  .cc-footer        { flex-direction: column-reverse; }
+  .cc-btn-cancel,
+  .cc-btn-save      { width: 100%; text-align: center; }
+}
+
+/* ── Error banner ────────────────────────────────────────── */
+.cc-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  border-radius: 9px;
+  padding: 12px 16px;
+  margin-bottom: 22px;
+  font-size: 13.5px;
+  color: #dc2626;
+  line-height: 1.5;
+}
+
+.cc-error-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #f87171;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color .15s;
+}
+.cc-error-dismiss:hover { color: #dc2626; }
+
+/* ── Save spinner animation ──────────────────────────────── */
+@keyframes cc-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Disabled state for inputs during save ───────────────── */
+.cc-field-input:disabled,
+.cc-sub-add-input:disabled {
+  background: #f9f9f9;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.cc-btn-create-sub:disabled,
+.cc-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Save button always visible (not conditional on subcategories) */
+.cc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+  margin-top: 4px;
+}
+
