@@ -153,7 +153,10 @@
 import { useState, useEffect } from 'react';
 import type { KeyboardEvent } from 'react';
 /* LocalCategory — inlined, no dummy data dependency */
-interface Category { id: string; name: string; active: boolean; source: 'manual' | 'ai'; needsReview: boolean; }
+
+interface Subcategory { id: string; name: string; }
+
+interface Category { id: string; name: string; active: boolean; source: 'manual' | 'ai'; needsReview: boolean; subcategories: Subcategory[]; }
 
 
 interface EditCategoryModalProps {
