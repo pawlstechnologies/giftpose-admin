@@ -538,11 +538,58 @@
 
 
 
+// import axios from 'axios';
+// import { tokenStorage } from '../utils/tokenStorage';
+
+// // Dev:  /api  → Vite proxies to http://localhost:4000/api (no CORS)
+// // Prod: set VITE_API_BASE_URL=https://api.giftpose.com/api in your host env vars
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
+
+// const httpClient = axios.create({
+//   baseURL: BASE_URL,
+//   timeout: 15000,
+// });
+
+// // Attach token to every request
+// httpClient.interceptors.request.use((config) => {
+//   const token = tokenStorage.getAccess();
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   // Only set Content-Type on requests that have a body
+//   if (config.data) {
+//     config.headers['Content-Type'] = 'application/json';
+//   }
+//   return config;
+// });
+
+// // On 401 — clear session and redirect to login
+// httpClient.interceptors.response.use(
+//   (res) => res,
+//   (error) => {
+//     const isAuthRoute = error.config?.url?.includes('/auth/');
+//     if (error.response?.status === 401 && !isAuthRoute) {
+//       tokenStorage.clearTokens();
+//       window.location.replace('/login');
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+// export default httpClient;
+
+// --------------------------------------
+// Simplified version without the refresh token logic, since the backend will now invalidate the access token immediately on logout.
+// If we do want to add refresh logic back in later, we can just reintroduce the isRefreshing + failedQueue pattern from the previous version.
+// --------------------------------------
+
+
 import axios from 'axios';
 import { tokenStorage } from '../utils/tokenStorage';
 
 // Dev:  /api  → Vite proxies to http://localhost:4000/api (no CORS)
-// Prod: set VITE_API_BASE_URL=https://api.giftpose.com/api in your host env vars
+// Prod: /api  → reverse proxy on your host rewrites to api.giftpose.com (no CORS)
+// Override: set VITE_API_BASE_URL if you want to hit the API directly
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 const httpClient = axios.create({
@@ -577,6 +624,5 @@ httpClient.interceptors.response.use(
 );
 
 export default httpClient;
-
 
 
