@@ -3748,6 +3748,7 @@
 
 
 
+
 import { useState, useEffect, useRef } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import Topbar from '../components/layout/Topbar';
@@ -3812,15 +3813,14 @@ export default function Categories() {
     setError('');
     try {
       // 1. Get category list
-      const catRes = await listCategories();
+      // Cast to any so we can handle any response shape the server returns
+      // regardless of what TypeScript thinks the type is
+      const catRes = await listCategories() as any;
 
-      console.log('[loadAll] raw catRes:', catRes);
-      // Handle any response shape the server returns
-      // Could be: { data: [] } or { data: { data: [] } } or just []
       let rawList: any[] = [];
-      if (Array.isArray(catRes))            rawList = catRes;
-      else if (Array.isArray(catRes?.data)) rawList = catRes.data;
-      else if (Array.isArray(catRes?.data?.data)) rawList = catRes.data.data;
+      if (Array.isArray(catRes))                 rawList = catRes;
+      else if (Array.isArray(catRes?.data?.data)) rawList = catRes?.data?.data;
+      else if (Array.isArray(catRes?.data))       rawList = catRes.data;
 
       const cats = rawList.map(toLocal);
       setCategories(cats);
@@ -3835,13 +3835,11 @@ export default function Categories() {
       const cache: TreeCache = {};
       results.forEach((r, i) => {
         if (r.status === 'fulfilled') {
-          const val = r.value;
-          // Handle: { data: { subcategories: [] } } or { subcategories: [] } or []
+          const val = r.value as any;  // cast — server shape may differ from declared type
           const subs =
             Array.isArray(val?.data?.subcategories) ? val.data.subcategories :
-            Array.isArray(val?.subcategories)        ? val.subcategories :
-            Array.isArray(val?.data)                 ? val.data :
-            Array.isArray(val)                       ? val : [];
+            Array.isArray(val?.data)                ? val.data :
+            Array.isArray(val)                      ? val : [];
           cache[cats[i].id] = subs;
         } else {
           cache[cats[i].id] = [];
@@ -3906,14 +3904,6 @@ export default function Categories() {
     if (activeCatId === deleteTarget.id) { setActiveCatId(null); setActiveSubId(null); }
     setDeleteTarget(null);
   }
-
-  const toggleStyle = (on: boolean): React.CSSProperties => ({
-    display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px',
-    border: 'none', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
-    fontSize: 13, fontWeight: 500,
-    background: on ? 'var(--green-pale)' : '#fff',
-    color: on ? 'var(--green)' : '#666',
-  });
 
   return (
     <div className="admin-layout">
@@ -4025,4 +4015,3 @@ export default function Categories() {
     </div>
   );
 }
-
