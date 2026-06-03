@@ -1,28 +1,3 @@
-// // import { useState } from 'react'
-// import { BrowserRouter, Routes, Route } from 'react-router-dom'
-// import Login from './pages/Login'
-// import VerifyOTP from './pages/VerifyOTP'
-// import './App.css'
-// import Dashboard from './pages/Dashboard'
-// import Categories from './pages/Categories'
-
-// function App() {
-//     return (
-//         <BrowserRouter>
-//             <Routes>
-//                 <Route path="/" element={<Login />} />
-//                 <Route path="/verify-otp" element={<VerifyOTP />} />
-//                 <Route path="/dashboard" element={<div><Dashboard /></div>} />
-//                 <Route path="/categories" element={<div><Categories /></div>} />
-//                 <Route path="/setup-mfa" element={<SetupMFA />} />
-//             </Routes>
-//         </BrowserRouter>
-//     );
-// }
-
-// export default App
-
-
 
 /**
  * App.tsx
@@ -46,6 +21,7 @@ import Login from './pages/Login';
 import VerifyOTP from './pages/VerifyOTP';
 import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -70,6 +46,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Categories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
