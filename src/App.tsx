@@ -22,6 +22,8 @@ import VerifyOTP from './pages/VerifyOTP';
 import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
 import Profile from './pages/Profile';
+import AccountHolders from './pages/AccountHolders';
+import AccountHolderDetail from './pages/AccountHolderDetail';
 
 export default function App() {
   return (
@@ -46,6 +48,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Categories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account-holders"
+            element={
+              <ProtectedRoute>
+                <AccountHolders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account-holders/:userId"
+            element={
+              <ProtectedRoute>
+                <AccountHolderDetail />
               </ProtectedRoute>
             }
           />

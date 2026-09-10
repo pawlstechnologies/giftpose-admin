@@ -3,10 +3,18 @@ import { useState } from 'react';
 interface TopbarProps {
   onMenuClick: () => void;
   searchPlaceholder?: string;
+  searchValue?: string;
+  onSearchChange?: (val: string) => void;
 }
 
-export default function Topbar({ onMenuClick, searchPlaceholder = 'Search analytics...' }: TopbarProps) {
+export default function Topbar({
+  onMenuClick,
+  searchPlaceholder = 'Search analytics...',
+  searchValue,
+  onSearchChange,
+}: TopbarProps) {
   const [query, setQuery] = useState('');
+  const currentQuery = searchValue !== undefined ? searchValue : query;
 
   return (
     <header className="topbar">
@@ -35,8 +43,12 @@ export default function Topbar({ onMenuClick, searchPlaceholder = 'Search analyt
           className="search-inp"
           type="text"
           placeholder={searchPlaceholder}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={currentQuery}
+          onChange={(e) => {
+            const next = e.target.value;
+            setQuery(next);
+            if (onSearchChange) onSearchChange(next);
+          }}
         />
       </div>
 
