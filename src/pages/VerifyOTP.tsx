@@ -1,8 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import type { KeyboardEvent, ClipboardEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { verifyOTP, resendOTP } from '../api/admin.api';
+import { getApiErrorMessage } from '../api/unwrap';
 import { useAuth } from '../context/AuthContext';
+import { otpStorage } from '../utils/tokenStorage';
+import { safeInternalPath } from '../utils/paths';
 
 const GiftposeLogo = () => (
   <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
@@ -112,7 +115,12 @@ export default function VerifyOTP() {
   const location = useLocation();
   const navigate = useNavigate();
   const { login } = useAuth();
-  const adminId   = location.state?.adminId;
+  const adminId = (location.state as { adminId?: string } | null)?.adminId
+    ?? otpStorage.getAdminId();
+  const from = safeInternalPath(
+    (location.state as { from?: string } | null)?.from ?? otpStorage.getFrom()
+  );
+  const email = otpStorage.getEmail();
 
   const [digits, setDigits]           = useState<string[]>(Array(OTP_LENGTH).fill(''));
   const [loading, setLoading]         = useState(false);
@@ -121,10 +129,9 @@ export default function VerifyOTP() {
   const [resendMsg, setResendMsg]     = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  /* Guard: if someone navigates here directly without going through login */
-  useEffect(() => {
-    if (!adminId) navigate('/login', { replace: true });
-  }, [adminId, navigate]);
+  if (!adminId) {
+    return <Navigate to="/login" replace />;
+  }
 
   const focusInput = (index: number) => {
     const clamped = Math.max(0, Math.min(OTP_LENGTH - 1, index));
@@ -181,12 +188,10 @@ export default function VerifyOTP() {
     try {
       setLoading(true);
       const res = await verifyOTP({ adminId, otp });
-      // OTP response carries the full session tokens — hand them to AuthContext
       await login(res.accessToken, res.refreshToken);
-      navigate('/dashboard', { replace: true });
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid OTP. Please try again.');
-      // Shake and clear digits on wrong OTP
+      navigate(from, { replace: true });
+    } catch (err: unknown) {
+      setError(getApiErrorMessage(err, 'Invalid OTP. Please try again.'));
       setDigits(Array(OTP_LENGTH).fill(''));
       setTimeout(() => focusInput(0), 50);
     } finally {
@@ -203,8 +208,8 @@ export default function VerifyOTP() {
       setDigits(Array(OTP_LENGTH).fill(''));
       focusInput(0);
       setResendMsg('A new code has been sent to your email.');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to resend code.');
+    } catch (err: unknown) {
+      setError(getApiErrorMessage(err, 'Failed to resend code.'));
     } finally {
       setResendLoading(false);
     }
@@ -278,8 +283,7 @@ export default function VerifyOTP() {
         <div className="gp-card" style={styles.card}>
           <div style={styles.cardTitle}>Verify Your Identity</div>
           <p style={styles.cardSub}>
-            To maintain institutional-grade security, please enter the 6-digit code from your
-            preferred authenticator app.
+            Enter the 6-digit code we sent to {email || 'your email'} to continue.
           </p>
 
           <div className="otp-inputs" style={styles.otpInputs}>

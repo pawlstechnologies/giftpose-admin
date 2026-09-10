@@ -21,8 +21,9 @@ import {
 
 import type { ReactNode } from 'react';
 
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { tokenStorage } from '../utils/tokenStorage';
+import { otpStorage, tokenStorage } from '../utils/tokenStorage';
 import { getAdminMe, adminLogout } from '../api/admin.api';
 import type { AdminProfile } from '../api/admin.api';
 
@@ -53,17 +54,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const profile = await getAdminMe();
       setAdmin(profile);
-    } catch {
-      // /me failed (token invalid / expired beyond refresh) → clean up
-      tokenStorage.clearTokens();
-      setAdmin(null);
+    } catch (err) {
+      const status = axios.isAxiosError(err) ? err.response?.status : undefined;
+      // Only drop the session on auth failure. Network/5xx keep tokens so a blip
+      // does not force a full re-login. The refresh interceptor already retried 401s.
+      if (status === 401) {
+        tokenStorage.clearTokens();
+        setAdmin(null);
+      }
     }
   }, []);
 
-  /* On mount: if a valid token exists, silently restore session */
+  /* On mount: restore if we have either token; let /me + refresh decide validity */
   useEffect(() => {
     const init = async () => {
-      if (tokenStorage.hasValidToken()) {
+      if (tokenStorage.hasSession()) {
         await fetchProfile();
       }
       setIsLoading(false);
@@ -74,17 +79,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /* Called after OTP verification — tokens already verified by server */
   const login = useCallback(async (accessToken: string, refreshToken: string) => {
     tokenStorage.setTokens(accessToken, refreshToken);
+    otpStorage.clear();
     await fetchProfile();
   }, [fetchProfile]);
 
   /* Called from any logout button */
   const logout = useCallback(async () => {
     try {
-      await adminLogout(); // tell server to invalidate refresh token
+      const refreshToken = tokenStorage.getRefresh() ?? undefined;
+      await adminLogout(refreshToken); // tell server to invalidate refresh token
     } catch {
       // swallow — we're clearing client state regardless
     } finally {
       tokenStorage.clearTokens();
+      otpStorage.clear();
       setAdmin(null);
       navigate('/login', { replace: true });
     }
@@ -93,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value: AuthContextValue = {
     admin,
     isLoading,
-    isAuthenticated: Boolean(admin),
+    isAuthenticated: Boolean(admin) || tokenStorage.hasSession(),
     login,
     logout,
     refreshProfile: fetchProfile,
