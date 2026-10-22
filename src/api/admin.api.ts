@@ -208,7 +208,7 @@ export interface UserActivityItem {
   title: string;
   description: string;
   timestamp: string;
-  type: 'view' | 'update' | 'auth' | 'subscription' | 'other';
+  type: 'view' | 'update' | 'auth' | 'subscription' | 'notification' | 'location' | 'other';
 }
 
 export interface AdminUserDetail {
@@ -219,10 +219,12 @@ export interface AdminUserDetail {
   isVerified: boolean;
   avatarUrl?: string;
   deviceId?: string;
+  createdAt?: string;
   location: {
     city: string;
     address?: string;
     postCode: string;
+    miles?: number;
   };
   subscription: UserSubscriptionDetail;
   notificationPreferences: {
@@ -231,6 +233,70 @@ export interface AdminUserDetail {
   itemsOfInterest: UserItemInterest[];
   recentActivity: UserActivityItem[];
 }
+
+export type DashboardPeriod = 'today' | '7' | '30' | '60' | 'custom';
+
+export interface DashboardStatCardData {
+  label: string;
+  value: string;
+  badge: string;
+  badgeVariant: 'pos' | 'neg';
+  subtext?: string;
+}
+
+export interface DashboardChartBar {
+  day: string;
+  val: number;
+  color: string;
+}
+
+export interface DashboardAsideStat {
+  label: string;
+  value: string;
+  valColor: 'green' | 'red' | 'blue';
+  subtext?: string;
+}
+
+export interface DashboardMetricItem {
+  label: string;
+  value: string;
+  suffix?: string;
+  accent?: boolean;
+  red?: boolean;
+}
+
+export interface DashboardData {
+  period: string;
+  dateRange: {
+    start: string;
+    end: string;
+  };
+  statCards: DashboardStatCardData[];
+  trafficChart: {
+    title: string;
+    subtitle: string;
+    data: DashboardChartBar[];
+  };
+  asideStats: DashboardAsideStat[];
+  donationMetrics: DashboardMetricItem[];
+  requestMetrics: DashboardMetricItem[];
+}
+
+export const getDashboardData = (params?: {
+  period?: DashboardPeriod | string;
+  startDate?: string;
+  endDate?: string;
+}): Promise<DashboardData> => {
+  const query = new URLSearchParams();
+  if (params?.period) query.set('period', params.period);
+  if (params?.startDate) query.set('startDate', params.startDate);
+  if (params?.endDate) query.set('endDate', params.endDate);
+
+  const qs = query.toString();
+  return httpClient
+    .get<{ success: boolean; data: DashboardData }>(`/admin/auth/dashboard${qs ? `?${qs}` : ''}`)
+    .then(r => r.data.data);
+};
 
 export const getAccountHolders = (params?: {
   page?: number;
@@ -254,4 +320,15 @@ export const getAccountHolderDetail = (userId: string): Promise<AdminUserDetail>
   httpClient
     .get<{ success: boolean; data: AdminUserDetail }>(`/admin/users/${userId}`)
     .then(r => r.data.data);
+
+export const toggleUserVerification = (userId: string): Promise<{ id: string; isVerified: boolean }> =>
+  httpClient
+    .patch<{ success: boolean; data: { id: string; isVerified: boolean } }>(`/admin/users/${userId}/verify`)
+    .then(r => r.data.data);
+
+export const updateUserStatus = (userId: string, status: string): Promise<{ id: string; status: string }> =>
+  httpClient
+    .patch<{ success: boolean; data: { id: string; status: string } }>(`/admin/users/${userId}/status`, { status })
+    .then(r => r.data.data);
+
 
